@@ -9,7 +9,7 @@ _all_my_fields = [
                   "Iteration",
                   "Release",
                   "TaskStatus",
-                  "CreationDate",
+                  "CreationDate"
                  ];
 
 Ext.define('CustomApp', {
