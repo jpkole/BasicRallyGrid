@@ -1,29 +1,58 @@
+_all_my_fields = [
+                  "FormattedID",
+                  "Name",
+                  "ScheduleState",
+                  "ObjectID",
+                  "DirectChildrenCount",
+                  "DefectStatus",
+                  "Project",
+                  "Iteration",
+                  "Release",
+                  "TaskStatus",
+                  "CreationDate",
+                 ];
+
 Ext.define('CustomApp', {
     extend: 'Rally.app.App',
     componentCls: 'app',
-    items:{ html:'<a href="https://help.rallydev.com/apps/2.0rc2/doc/">App SDK 2.0rc2 Docs</a>'},
+
+    // Lanched by Rally App framework
     launch: function() {
-      //Write app code here
-      console.log("Our first app");
+
+      console.log("JP's BasicRallyGrid app running...");
+      this._loadData();
+    },
+
+    // Get data from Rally
+    _loadData: function() {
+
       var myStore = Ext.create('Rally.data.wsapi.Store', {
           model: 'User Story',
           autoLoad: true,
           listeners: {
               load: function(myStore, myData, success) {
-                //process data
                 console.log("got data from store: ", myStore, myData, success);
-                var myGrid = Ext.create("Rally.ui.grid.Grid", {
-                  store: myStore,
-                  columnCfgs: [ "FormattedID", "Name", "ScheduleState" ]
-                });
-                console.log("myGrid: ", myGrid);
-
-                this.add(myGrid);
-                console.log("what is this? ", this);
+                this._loadGrid(myStore);
               },
               scope: this
-          },
-          fetch: ['FormattedID', 'Name', 'ScheduleState']
+              },
+          fetch: _all_my_fields
+          });
+
+    },
+
+    // Create and display a grid of given stories
+    _loadGrid: function(myStoreOfStories) {
+
+      var myGrid = Ext.create("Rally.ui.grid.Grid", {
+        store: myStoreOfStories,
+        columnCfgs: _all_my_fields
       });
+
+      this.add(myGrid);
+      console.log("what is this? ", this);
+
     }
+
 });
+//the end
